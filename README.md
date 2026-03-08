@@ -1,56 +1,64 @@
-# WebDAV 书签同步
+# WebDAV Bookmark Sync / WebDAV 书签同步
 
-一个功能完整的浏览器扩展，用于通过 WebDAV 在不同设备间同步浏览器书签。支持实时书签变更提醒、安全的凭证存储，以及用户友好的多语言界面。
+A full-featured browser extension for syncing bookmarks across devices via WebDAV. Supports real-time bookmark change notifications, secure credential storage, and a user-friendly multilingual interface.
 
-## 支持浏览器
+功能完整的浏览器扩展，用于通过 WebDAV 在不同设备间同步浏览器书签。
 
-| 浏览器 | 状态 | 说明 |
-|--------|------|------|
-| Chrome | ✅ | 书签栏 |
-| Edge | ✅ | 收藏夹栏 |
-| Firefox | ✅ | 书签工具栏 |
+---
 
-## 功能特性
+## Supported Browsers / 支持浏览器
 
-### 📚 书签同步
-- 支持书签上传与下载
-- 保持文件夹结构完整
-- 智能识别各浏览器书签分类
-- 跨浏览器同步（Chrome ↔ Edge ↔ Firefox）
+| Browser | Status | Folder Name |
+|---------|--------|-------------|
+| Chrome | ✅ | Bookmarks Bar |
+| Edge | ✅ | Favorites Bar |
+| Firefox | ✅ | Toolbar |
 
-### 🔄 WebDAV 集成
-- 支持标准 WebDAV 协议
-- 连接测试功能
-- 自定义服务器地址
-- 详细错误提示
+---
 
-### 🔒 安全性
-- AES-GCM 加密存储凭证
-- Chrome 同步存储保护配置
-- 密码长度验证
+## Features / 功能特性
 
-### 🔔 智能提醒
-- 书签变更实时通知
-- 徽章显示未同步状态
-- 避免重复提醒
+### 📚 Bookmark Sync / 书签同步
+- Bookmark upload & download / 书签上传与下载
+- Preserve folder structure / 保持文件夹结构完整
+- Smart folder categorization / 智能识别各浏览器书签分类
+- Cross-browser sync / 跨浏览器同步 (Chrome ↔ Edge ↔ Firefox)
 
-### 🎨 用户界面
-- 简洁弹出窗口
-- 响应式操作反馈
-- 中英文语言切换
-- 记住语言偏好
+### 🔄 WebDAV Integration / WebDAV 集成
+- Standard WebDAV protocol / 标准 WebDAV 协议
+- Connection testing / 连接测试功能
+- Custom server address / 自定义服务器地址
+- Detailed error messages / 详细错误提示
 
-## 快速开始
+### 🔒 Security / 安全性
+- AES-GCM encryption / AES-GCM 加密存储
+- Chrome sync storage / Chrome 同步存储保护
+- Password validation / 密码长度验证
 
-### 1. 安装扩展
+### 🔔 Smart Notifications / 智能提醒
+- Real-time change alerts / 书签变更实时通知
+- Badge for unsynced changes / 徽章显示未同步状态
+- Avoid duplicate alerts / 避免重复提醒
 
-**方式一：从 Release 安装**
-1. 从 [Release](https://github.com/nexply/bookmarksync/releases) 下载最新 `.zip` 文件
-2. 打开 `chrome://extensions/`
-3. 开启"开发者模式"
-4. 拖放 ZIP 文件到页面
+### 🎨 User Interface / 用户界面
+- Clean popup design / 简洁弹出窗口
+- Responsive feedback / 响应式操作反馈
+- Multilingual support / 中英文语言切换
+- Language preference saved / 记住语言偏好
 
-**方式二：开发版本安装**
+---
+
+## Quick Start / 快速开始
+
+### Installation / 安装
+
+**Option 1: From Release / 从 Release 安装**
+1. Download latest `.zip` from [Release](https://github.com/nexply/bookmarksync/releases)
+2. Open `chrome://extensions/`
+3. Enable "Developer mode"
+4. Drag and drop the ZIP file
+
+**Option 2: Development Version / 开发版本**
 ```bash
 git clone https://github.com/nexply/bookmarksync.git
 cd bookmarksync
@@ -58,75 +66,87 @@ npm install
 npm run generate-key
 npm run build
 ```
-然后加载 `dist` 目录
+Then load the `dist` directory
 
-### 2. 配置 WebDAV
+### Configure WebDAV / 配置 WebDAV
 
-支持自建服务器或以下服务：
-- 群晖 NAS
+Supported services / 支持的服务：
+- Synology NAS / 群晖 NAS
 - Nextcloud
 - ownCloud
-- 任意支持 WebDAV 的网盘
+- Any WebDAV-enabled cloud storage
 
-服务器地址示例：`https://dav.example.com`
+Server URL example / 服务器地址示例：`https://dav.example.com`
 
-### 3. 使用
+### Usage / 使用方法
 
-1. 点击扩展图标
-2. 选择语言（中文/英文）
-3. 填写 WebDAV 配置
-4. 点击"测试连接"
-5. 点击"保存设置"
-6. 上传/下载书签
+1. Click the extension icon / 点击扩展图标
+2. Select language (Chinese/English) / 选择语言（中文/英文）
+3. Enter WebDAV credentials / 填写 WebDAV 配置
+4. Click "Test Connection" / 点击"测试连接"
+5. Click "Save Settings" / 点击"保存设置"
+6. Upload or download bookmarks / 上传/下载书签
 
-## 注意事项
+---
 
-- ⚠️ 首次下载会清空本地书签（建议先备份）
-- 🔐 密码至少 8 个字符
-- 🌐 确保 WebDAV 服务器支持 CORS
-- 📱 书签变更时图标显示红色感叹号
+## Notes / 注意事项
 
-## 常见问题
+- ⚠️ First download will clear local bookmarks (backup recommended) / 首次下载会清空本地书签（建议先备份）
+- 🔐 Password must be at least 8 characters / 密码至少 8 个字符
+- 🌐 Ensure WebDAV server supports CORS / 确保服务器支持 CORS
+- 📱 Red exclamation mark shows unsynced changes / 红色感叹号表示有未同步的更改
 
-**Q: 测试连接失败？**
-A: 检查服务器地址、用户名密码，确保服务器支持 CORS
+---
 
-**Q: 书签导入位置不对？**
-A: 扩展会自动识别各浏览器的书签分类（书签栏/收藏夹栏/书签工具栏）
+## FAQ / 常见问题
 
-**Q: 如何备份书签？**
-A: 使用浏览器的"导出书签"功能，或直接上传当前书签
+**Q: Connection test failed? / 测试连接失败？**
+A: Check server URL, username/password, ensure server supports CORS / 检查服务器地址、用户名密码，确保支持 CORS
 
-## 开发指南
+**Q: Bookmarks imported to wrong folder? / 书签导入位置不对？**
+A: Extension automatically detects browser-specific folder names / 扩展会自动识别各浏览器的书签分类
+
+**Q: How to backup bookmarks? / 如何备份书签？**
+A: Use browser's "Export Bookmarks" or upload current bookmarks / 使用浏览器"导出书签"功能或直接上传
+
+---
+
+## Development / 开发指南
 
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
 
-# 生成开发密钥
+# Generate development key
 npm run generate-key
 
-# 构建发布版本
+# Build release version
 npm run build
 
-# 构建调试版本
+# Build debug version
 npm run build:debug
 ```
 
-构建输出：`dist/bookmark-sync-v{version}.zip`
+Output / 构建输出：`dist/bookmark-sync-v{version}.zip`
 
-## 技术栈
+---
+
+## Tech Stack / 技术栈
 
 - Chrome Extension (Manifest V3)
 - JavaScript ES6+
-- WebDAV 协议
-- AES-GCM 加密
+- WebDAV Protocol
+- AES-GCM Encryption
 
-## 许可证
+---
 
-Apache License 2.0 - 详见 [LICENSE](LICENSE)
+## License / 许可证
 
-## 支持
+Apache License 2.0 - See [LICENSE](LICENSE)
 
-- [提交 Issue](https://github.com/nexply/bookmarksync/issues)
-- [提交 PR](https://github.com/nexply/bookmarksync/pulls)
+---
+
+## Support / 支持
+
+- [Submit Issue](https://github.com/nexply/bookmarksync/issues)
+- [Submit PR](https://github.com/nexply/bookmarksync/pulls)
