@@ -21,7 +21,8 @@ class BookmarkManager {
   static async importBookmarks(bookmarkData) {
     const BROWSER_TYPE = {
       FIREFOX: 'firefox',
-      CHROME: 'chrome'
+      CHROME: 'chrome',
+      EDGE: 'edge'
     };
 
     const ROOT_FOLDERS = {
@@ -35,54 +36,67 @@ class BookmarkManager {
         TOOLBAR: '1',
         OTHER: '2',
         MOBILE: '3'
+      },
+      EDGE: {
+        FAVORITES: '1',
+        OTHER: '2',
+        MOBILE: '3'
       }
     };
 
-    // 检测当前浏览器类型
     const getCurrentBrowser = () => {
-      return typeof browser !== 'undefined' ? BROWSER_TYPE.FIREFOX : BROWSER_TYPE.CHROME;
+      if (typeof browser !== 'undefined') return BROWSER_TYPE.FIREFOX;
+      const ua = navigator.userAgent;
+      if (ua.includes('Edg/')) return BROWSER_TYPE.EDGE;
+      return BROWSER_TYPE.CHROME;
     };
 
     // 获取根文件夹ID
     const getRootFolderId = (folderTitle, browserType) => {
+      const allBarNames = ['书签栏', 'Bookmarks Bar', '收藏夹', 'Favorites', '收藏夹栏', 'Favorites Bar', '书签工具栏', 'Toolbar', 'Menu', '书签菜单'];
+      const allOtherNames = ['其他书签', 'Other Bookmarks', '其他收藏夹', 'Other Favorites'];
+      const allMobileNames = ['移动书签', 'Mobile', 'mobile______'];
+
+      const isBar = allBarNames.includes(folderTitle);
+      const isOther = allOtherNames.includes(folderTitle);
+      const isMobile = allMobileNames.includes(folderTitle);
+
       if (browserType === BROWSER_TYPE.FIREFOX) {
-        switch (folderTitle) {
-          case I18n.t('bookmarks.menu'):
-          case I18n.t('bookmarks.menuZh'): return ROOT_FOLDERS.FIREFOX.MENU;
-          case I18n.t('bookmarks.mobile'):
-          case I18n.t('bookmarks.mobileZh'): return ROOT_FOLDERS.FIREFOX.MOBILE;
-          case I18n.t('bookmarks.toolbar'):
-          case I18n.t('bookmarks.toolbarZh'): return ROOT_FOLDERS.FIREFOX.TOOLBAR;
-          default: return ROOT_FOLDERS.FIREFOX.UNFILED;
-        }
+        if (isBar || folderTitle === 'toolbar_____' || folderTitle === 'Toolbar') return ROOT_FOLDERS.FIREFOX.TOOLBAR;
+        if (isMobile) return ROOT_FOLDERS.FIREFOX.MOBILE;
+        if (folderTitle === 'menu________' || folderTitle === 'Menu') return ROOT_FOLDERS.FIREFOX.MENU;
+        return ROOT_FOLDERS.FIREFOX.UNFILED;
+      } else if (browserType === BROWSER_TYPE.EDGE) {
+        if (isBar) return ROOT_FOLDERS.EDGE.FAVORITES;
+        if (isMobile) return ROOT_FOLDERS.EDGE.MOBILE;
+        if (isOther) return ROOT_FOLDERS.EDGE.OTHER;
+        return ROOT_FOLDERS.EDGE.OTHER;
       } else {
-        switch (folderTitle) {
-          case I18n.t('bookmarks.bar'):
-          case I18n.t('bookmarks.barZh'): return ROOT_FOLDERS.CHROME.TOOLBAR;
-          case I18n.t('bookmarks.mobile'):
-          case I18n.t('bookmarks.mobileZh'): return ROOT_FOLDERS.CHROME.MOBILE;
-          default: return ROOT_FOLDERS.CHROME.OTHER;
-        }
+        if (isBar) return ROOT_FOLDERS.CHROME.TOOLBAR;
+        if (isMobile) return ROOT_FOLDERS.CHROME.MOBILE;
+        if (isOther) return ROOT_FOLDERS.CHROME.OTHER;
+        return ROOT_FOLDERS.CHROME.OTHER;
       }
     };
 
     async function createBookmarkTree(node, parentId, browserType) {
       try {
         if (node.url) {
-          // 处理特殊URL格式
           let url = node.url;
           if (browserType === BROWSER_TYPE.FIREFOX && url.startsWith('chrome://')) {
             url = url.replace('chrome://', 'about:');
           }
 
-          const bookmarkAPI = browserType === BROWSER_TYPE.FIREFOX ? browser.bookmarks : chrome.bookmarks;
+          const isFirefox = browserType === BROWSER_TYPE.FIREFOX;
+          const bookmarkAPI = isFirefox ? browser.bookmarks : chrome.bookmarks;
           await bookmarkAPI.create({
             parentId: parentId,
             title: node.title,
             url: url
           });
         } else {
-          const bookmarkAPI = browserType === BROWSER_TYPE.FIREFOX ? browser.bookmarks : chrome.bookmarks;
+          const isFirefox = browserType === BROWSER_TYPE.FIREFOX;
+          const bookmarkAPI = isFirefox ? browser.bookmarks : chrome.bookmarks;
           const folder = await bookmarkAPI.create({
             parentId: parentId,
             title: node.title
@@ -101,7 +115,8 @@ class BookmarkManager {
 
     try {
       const browserType = getCurrentBrowser();
-      const bookmarkAPI = browserType === BROWSER_TYPE.FIREFOX ? browser.bookmarks : chrome.bookmarks;
+      const isFirefox = browserType === BROWSER_TYPE.FIREFOX;
+      const bookmarkAPI = isFirefox ? browser.bookmarks : chrome.bookmarks;
       
       // 在导入开始前临时禁用书签变更监听
       const port = chrome.runtime.connect({ name: 'disable-bookmark-listener' });

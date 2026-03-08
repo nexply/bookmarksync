@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
   "short_name": "__MSG_extShortName__",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage_url": "https://github.com/nexply/bookmarksync",
   "permissions": [
     "bookmarks",

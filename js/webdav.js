@@ -18,11 +18,10 @@ class WebDAVClient {
 
   async testConnection() {
     try {
-      const response = await fetch(this.serverUrl, {
-        method: 'PROPFIND',
+      const response = await fetch(this.serverUrl + '/bookmarks.json', {
+        method: 'GET',
         headers: {
-          'Authorization': 'Basic ' + btoa(this.username + ':' + this.password),
-          'Depth': '0'
+          'Authorization': 'Basic ' + btoa(this.username + ':' + this.password)
         }
       });
 
@@ -30,7 +29,7 @@ class WebDAVClient {
         throw new WebDAVError(I18n.t('errors.authFailed'), 'auth', 401);
       }
 
-      return response.ok;
+      return response.ok || response.status === 404;
     } catch (error) {
       if (error instanceof WebDAVError) {
         throw error;

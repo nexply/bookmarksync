@@ -50,7 +50,11 @@ const messages = {
       toolbar: '书签工具栏',
       toolbarZh: '书签工具栏',
       bar: '书签栏',
-      barZh: '书签栏'
+      barZh: '书签栏',
+      favorites: '收藏夹',
+      favoritesZh: '收藏夹',
+      otherFavorites: '其他收藏夹',
+      otherFavoritesZh: '其他收藏夹'
     }
   },
   en: {
@@ -104,7 +108,11 @@ const messages = {
       toolbar: 'Toolbar',
       toolbarZh: '书签工具栏',
       bar: 'Bookmarks Bar',
-      barZh: '书签栏'
+      barZh: '书签栏',
+      favorites: 'Favorites',
+      favoritesZh: '收藏夹',
+      otherFavorites: 'Other Favorites',
+      otherFavoritesZh: '其他收藏夹'
     }
   }
 };
