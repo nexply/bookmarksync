@@ -91,7 +91,7 @@ Server URL example / 服务器地址示例：`https://dav.example.com`
 
 ## Notes / 注意事项
 
-- ⚠️ First download will clear local bookmarks (backup recommended) / 首次下载会清空本地书签（建议先备份）
+- ⚠️ First download will clear local bookmarks (backup recommended) / 首次下载会清空本地书签（建议先备份）— since v1.0.5, a backup is automatically restored if the import fails / v1.0.5 起导入失败会自动恢复备份
 - 🔐 Password must be at least 8 characters / 密码至少 8 个字符
 - 🌐 Ensure WebDAV server supports CORS / 确保服务器支持 CORS
 - 📱 Red exclamation mark shows unsynced changes / 红色感叹号表示有未同步的更改
@@ -137,6 +137,18 @@ Output / 构建输出：`dist/bookmark-sync-v{version}.zip`
 - JavaScript ES6+
 - WebDAV Protocol
 - AES-GCM Encryption
+
+---
+
+## Changelog / 更新日志
+
+See [CHANGELOG.md](CHANGELOG.md) for full history / 完整历史见 CHANGELOG.md。
+
+- **v1.0.8 (2026-08)**: Fixed "Bookmark id is invalid." on newer Chrome — browser detection now uses UA instead of `typeof browser` / 修复新版 Chrome 下载报错，浏览器识别改用 UA
+- **v1.0.7 (2026-08)**: Fixed Firefox "Bookmark id is invalid." — root folders now detected dynamically instead of hardcoded IDs / 修复 Firefox 导入失败，根文件夹改为动态识别
+- **v1.0.6 (2026-08)**: Added sync data validation & diagnostics; any import failure now rolls back with clear error / 新增同步数据校验与诊断日志，导入失败自动回滚并明确报错
+- **v1.0.5 (2026-08)**: Fixed bookmark count becoming 0 after download; case-insensitive root folder detection; added import backup & rollback / 修复下载后书签为 0；根文件夹大小写不敏感识别；导入备份回滚
+- **v1.0.4**: Initial release / 初始版本
 
 ---
 

@@ -92,6 +92,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       button.disabled = true;
       
       const bookmarks = await BookmarkManager.getAllBookmarks();
+      const count = countBookmarks(bookmarks);
+      console.log('[Sync] 上传数据根文件夹:', (bookmarks[0]?.children || []).map(n => `"${n.title}"`).join(', '));
+      console.log('[Sync] 上传书签数量:', count);
+      if (count === 0) {
+        throw new Error('本地书签为 0，没有可上传的内容');
+      }
       const client = await getWebDAVClient();
       await client.uploadBookmarks(bookmarks);
       await SecureStorage.clearBookmarksChangedFlag();
@@ -113,6 +119,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       const client = await getWebDAVClient();
       const bookmarks = await client.downloadBookmarks();
+      console.log('[Sync] 下载数据根文件夹:', ((bookmarks && bookmarks[0] && bookmarks[0].children) || []).map(n => `"${n.title}"`).join(', '));
+      console.log('[Sync] 下载书签数量:', countBookmarks(bookmarks));
+      if (countBookmarks(bookmarks) === 0) {
+        throw new Error('服务器上 bookmarks.json 没有书签数据（为 0 条），请先在其他设备上传');
+      }
       await BookmarkManager.importBookmarks(bookmarks);
       await SecureStorage.clearBookmarksChangedFlag();
       showStatus(I18n.t('status.downloadSuccess'), true);
@@ -160,4 +171,15 @@ async function getWebDAVClient() {
     credentials.username,
     credentials.password
   );
+}
+
+// 统计书签数量（不含文件夹）
+function countBookmarks(tree) {
+  let n = 0;
+  const walk = (node) => {
+    if (node.url) n++;
+    for (const c of node.children || []) walk(c);
+  };
+  for (const root of (tree && tree[0] && tree[0].children) || []) walk(root);
+  return n;
 } 
